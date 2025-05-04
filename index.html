@@ -1,0 +1,74 @@
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Rainbow Six Randomizer</title>
+  <style>
+    body { background-color: #111; color: white; font-family: Arial, sans-serif; text-align: center; padding: 40px; }
+    button { padding: 14px 28px; font-size: 18px; background-color: #0078d7; color: white; border: none; border-radius: 8px; margin: 10px; cursor: pointer; }
+    button:hover { background-color: #005fa3; }
+    img { margin: 20px auto; display: block; max-width: 300px; opacity: 0; transition: opacity 0.4s ease-in; }
+    .operator-name { font-size: 30px; margin-top: 20px; opacity: 0; transition: opacity 0.4s ease-in; }
+    .toggle { margin-top: 20px; }
+    label { font-size: 16px; }
+  </style>
+</head>
+<body>
+  <h1>🎯 Rainbow Six Operator Randomizer</h1>
+  <div class="toggle">
+    <label><input type="checkbox" id="useSlot" checked> Slotmachine aktivieren</label>
+  </div>
+  <button onclick="pick('attacker')">Angreifer</button>
+  <button onclick="pick('defender')">Verteidiger</button>
+  <p class="operator-name" id="name">?</p>
+  <img id="icon" src="" alt="Icon">
+  <img id="portrait" src="" alt="Portrait">
+
+  <script>
+    const attackers = [
+      "ace", "amaru", "ash", "blackbeard", "blitz", "brava", "buck", "capitao", "deimos",
+      "dokkaebi", "finka", "flores", "fuze", "glaz", "grim", "hibana", "iana", "iq", "jackal",
+      "kali", "lion", "maverick", "montagne", "nomad", "nokk", "osa", "ram", "rauora",
+      "sledge", "sens", "striker", "thatcher", "thermite", "twitch", "ying", "zero", "zofia", "gridlock"
+    ];
+
+    const defenders = [
+      "alibi", "aruni", "azami", "bandit", "castle", "clash", "doc", "echo", "ela", "fenrir",
+      "frost", "goyo", "jaeger", "kaid", "kapkan", "lesion", "maestro", "melusi", "mira",
+      "mozzy", "mute", "oryx", "pulse", "rook", "skopos", "smoke", "solis", "tachanka",
+      "thorn", "valkyrie", "vigil", "warden", "wamai", "thunderbird", "sentry", "tubarao"
+    ];
+
+    function pick(role) {
+      const list = role === "attacker" ? attackers : defenders;
+      const useSlot = document.getElementById("useSlot").checked;
+
+      if (useSlot) {
+        let counter = 0;
+        const interval = setInterval(() => {
+          const op = list[Math.floor(Math.random() * list.length)];
+          updateDisplay(op, 0.3);
+          counter++;
+          if (counter >= 10) {
+            clearInterval(interval);
+            updateDisplay(op, 1);
+          }
+        }, 100);
+      } else {
+        const op = list[Math.floor(Math.random() * list.length)];
+        updateDisplay(op, 1);
+      }
+    }
+
+    function updateDisplay(op, opacity) {
+      document.getElementById("name").textContent = op.charAt(0).toUpperCase() + op.slice(1);
+      document.getElementById("icon").src = `images/operator/${op}.png`;
+      document.getElementById("portrait").src = `images/operator/${op}_portrait.png`;
+      document.getElementById("name").style.opacity = opacity;
+      document.getElementById("icon").style.opacity = opacity;
+      document.getElementById("portrait").style.opacity = opacity;
+    }
+  </script>
+</body>
+</html>
